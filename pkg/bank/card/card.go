@@ -106,3 +106,25 @@ func Total(cards []types.Card) types.Money {
 	sum := sum(operations)
 	return types.Money(sum)
 }
+
+//PaymentSources gives slice of valid card 
+func PaymentSources(cards []types.Card) []types.PaymentSource {
+	var result []types.PaymentSource
+	for _, card := range cards {
+		if !card.Active {
+			continue
+		}
+		if card.Balance <= 0 {
+			continue
+		}
+
+        var validCard = types.PaymentSource {
+			Type: "card",
+			Number: string(card.PAN),
+			Balance: card.Balance,
+		}
+
+		result = append(result, validCard)
+	}
+	return result
+}
